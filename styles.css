@@ -16,28 +16,58 @@ body {
 
 /* GLOBAL VARIABLES */
 :root {
-    --font-size:        14px;
-    --font-size-sm:     round(down, 0.75rem, 1px);
-    --font-size-lg:     round(down, 1.5rem, 1px);
-    --font-size-xl:     round(down, 4rem, 1px);
-    
-    --grid-cell-size:   round(up, calc(var(--font-size) * 1.5), 1px);
-    --grid-width:       round(down, 100vw, var(--grid-cell-size));
-    --grid-height:      round(down, 100vh, var(--grid-cell-size));
+    /* FONT SIZE:
+    ** As text is the most important thing, we define that size next 
+    ** I might come back later and make this a dynamic value,
+    ** but the rest of the calculations should work regardless.
+    ** The non-default font sizes use REM, rounded to the nearest pixel */
+    --font-size: 17px;
+    --font-size-sm: round(down, 0.8rem, 1px);
+    --font-size-lg: round(up, 2rem, 1px); 
+    --font-size-xl: round(up, 4rem, 1px);
 
-    --line-height:      var(--grid-cell-size);
-    --line-height-sm:   var(--line-height);
-    --line-height-lg:   calc(var(--line-height) * 2);
-    --line-height-xl:   calc(var(--line-height) * 4);
+    /* GRID SIZE:
+    ** Based on a ratio of the default font size */
+    --grid-size: round(1.5rem, 1px);
 
-    --text-offset:      calc(var(--line-height) - round(1cap, 1px));
+    /* GRID:
+    ** The grid scales according to the viewport size */
+    --grid-columns: round(down, calc(100vw / var(--grid-size)), 1);
+    --grid-rows: round(down, calc(100vh / var(--grid-size)), 1);
+    --grid-width: calc(var(--grid-columns) * var(--grid-size));
+    --grid-height: calc(var(--grid-rows) * var(--grid-size));
+    --grid-colour: light-dark(#DDD, #333);
+    --grid-margin: var(--grid-size);
+    --grid-gutter: var(--grid-size);
 
-    --grid-line-color-1: light-dark(black, white);
-    --grid-line-color-2: light-dark(#CCC, #444);
+    /* BASELINE CALCULATION: */
+    --text-line-height:     round(up, 1cap, var(--grid-size));
+    --text-offset:          calc(var(--text-line-height) - round(1cap, 1px));
 
-    --column-1-width: round(up, 20vw, var(--grid-cell-size));
-    --column-2-width: calc(var(--grid-width) - var(--column-1-width) - var(--column-3-width));
-    --column-3-width: round(up, 20vw, var(--grid-cell-size));
+    /* MACRO LAYOUT: */
+    --column-1-min-width:       round(7rem, var(--grid-size));
+    --column-1-preferred-width: round(15vw, var(--grid-size));
+    --column-1-max-width:       20rem;
+    --column-1-width:           min(
+                                    max(
+                                        0px,
+                                        round(
+                                            down,
+                                            calc((var(--column-1-preferred-width) / var(--column-1-min-width))),
+                                            1
+                                        ) * 1000px
+                                    ),
+                                    var(--column-1-preferred-width)
+                                );
+
+    --column-2-width:       calc(var(--grid-width) - var(--column-1-width) - var(--column-3-width));
+    --column-3-width:       round(up, 25vw, var(--grid-size));
+
+    /* COLORS */
+    --background: light-dark(white, black);
+    --foreground: light-dark(black, white);
+    --heavy-grid-line: light-dark(#111, #888);
+    --light-grid-line: light-dark(#CCC, #2D2D2D);
 }
 
 
@@ -46,10 +76,10 @@ body {
 body {
     font-family: 'Helvetica';
     font-size: var(--font-size);
-    line-height: var(--line-height);
+    line-height: var(--text-line-height);
 }
 
-h1, h2, h3, h4, p {
+h1, h2, h3, h4, p, a, figcaption {
     text-box: trim-both cap alphabetic;
     padding-top: var(--text-offset);
 }
@@ -59,46 +89,65 @@ h1, h2, h3, h4, p {
 /* SITE HEADER */
 .site-header {
     display: flex;
-    align-items: baseline;
+    align-items: flex-end;
+    padding: var(--grid-size) 0 0 0;
+    position: sticky;
+    top:0;
+    left:0;
+    right:0;
+    box-shadow: 0 0 0 1px var(--heavy-grid-line);
 }
+
 .site-header__logo {
-    display: inline-flex;
+    text-align: right;
     width: var(--column-1-width);
-    font-size: var(--font-size-xl);
-    line-height: var(--line-height-xl);
+    font-size: var(--font-size-lg);
+    padding-right: var(--grid-size);
 }
 
 .site-header__nav {
-    line-height: var(--line-height-lg);
+    display: inline-flex;
     width: var(--column-2-width);
+    gap: var(--grid-size);
 }
 
 .site-header__cta {
-    line-height: var(--line-height-lg);
-    width: var(--column-3-width);
+    max-width: var(--column-3-width);
 }
+
 
 
 /* PAGE HEADER */
 .page-header {
     display: flex;
+    padding-top: calc(var(--grid-size) * 2);
     padding-left: var(--column-1-width);
     padding-right: var(--column-3-width);
+    box-shadow: 0 0 0 1px var(--heavy-grid-line);
+    margin-bottom: var(--grid-size);
 }
 
+.page-header h2 {
+    font-size: var(--font-size-xl);
+}
 
 /* LEAD */
 .lead {
-    display: flex;
-    padding-left: var(--column-1-width);
-    padding-right: var(--column-3-width);
+    margin-left: var(--column-1-width);
+    width: var(--column-2-width);
+    background-size: var(--grid-size) var(--grid-size);
+    background-image: linear-gradient(to top, var(--heavy-grid-line) 1px, transparent 1px); 
+    margin-bottom: var(--grid-size);
 }
 
 
 
 /* PHOTOSET */
 .photoset {
-    padding-left: var(--column-1-width);
+    margin-left: var(--column-1-width);
+    width: calc(var(--column-2-width) + var(--column-3-width));
+    background-size: var(--grid-size) var(--grid-size);
+    background-image: linear-gradient(to top, var(--heavy-grid-line) 1px, transparent 1px); 
 }
 .photoset figure {
     display: flex;
@@ -123,8 +172,9 @@ img {
     height: 100%;
     left: 0;
     top: 0;
-    border-right: 1px solid var(--grid-line-color-1);
+    border-right: 1px solid var(--heavy-grid-line);
     pointer-events: none;
+    z-index: 1;
 } 
 
 .columns-preview .left-grid-line {
@@ -135,9 +185,10 @@ img {
     width: calc(var(--column-1-width) + var(--column-2-width));
 }
 
-body {
-    background-size: var(--grid-cell-size) var(--grid-cell-size);
+.square-grid-background {
+    background-color: var(--background);
+    background-size: var(--grid-size) var(--grid-size);
     background-image:
-        linear-gradient(to right, var(--grid-line-color-2) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--grid-line-color-2) 1px, transparent 1px);
+        linear-gradient(to right, var(--light-grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--light-grid-line) 1px, transparent 1px); 
 }
