@@ -1,0 +1,93 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+  color-scheme: light dark;
+}
+body {
+  color: light-dark(black, white);
+  background-color: light-dark(white, black);
+}
+
+
+/* TEMPORARY */
+img {
+    max-width: 400px;
+}
+
+
+
+/* GLOBAL VARIABLES */
+:root {
+    --font-size:        16px;
+    --font-size-sm:     round(down, 0.75rem, 1px);
+    --font-size-lg:     round(down, 1.5rem, 1px);
+    --font-size-xl:     round(down, 2rem, 1px);
+    
+    --grid-size:        round(up, 1.2rem, 1px);
+
+    --line-height:      var(--grid-size);
+    --line-height-sm:   round(up, 1rem, var(--grid-size));
+    --line-height-lg:   round(up, 2rem, var(--grid-size));
+    --line-height-xl:   round(up, 3rem, var(--grid-size));
+}
+
+
+
+/* TEXT */
+body {
+    font-family: 'Helvetica';
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+}
+
+h1, h2, h3, h4, p {
+    text-box: trim-both cap alphabetic;
+    padding-top: var(--text-offset);
+}
+
+
+
+/* SITE HEADER */
+.site-header {
+
+}
+
+.site-header h1 {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-xl);
+}
+
+/* PAGE HEADER */
+.page-header {
+
+}
+
+.page-header h2 {
+    font-size: var(--font-size-lg);
+    line-height: var(--font-size-lg);
+}
+
+
+/* HOME PAGE */
+body.home {
+
+}
+
+body.product-design {
+    
+}
+
+body.printing-and-puzzling {
+
+}
+
+/* PHOTOGRAPHY PAGE */
+body.photography {
+
+}
+
+    .
