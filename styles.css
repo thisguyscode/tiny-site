@@ -26,9 +26,8 @@ body {
     --font-size-lg: round(up, 2rem, 1px); 
     --font-size-xl: round(up, 4rem, 1px);
 
-    /* GRID SIZE:
-    ** Based on a ratio of the default font size */
-    --grid-size: round(1.5rem, 1px);
+    /* GRID SIZE: */
+    --grid-size: 24px;
 
     /* GRID:
     ** The grid scales according to the viewport size */
@@ -43,34 +42,38 @@ body {
     /* BASELINE CALCULATION: */
     --text-line-height:     round(up, 1cap, var(--grid-size));
     --text-offset:          calc(var(--text-line-height) - round(1cap, 1px));
-
-    /* MACRO LAYOUT: */
-    --column-1-min-width:       round(7rem, var(--grid-size));
-    --column-1-preferred-width: round(15vw, var(--grid-size));
-    --column-1-max-width:       20rem;
-    --column-1-width:           min(
-                                    max(
-                                        0px,
-                                        round(
-                                            down,
-                                            calc((var(--column-1-preferred-width) / var(--column-1-min-width))),
-                                            1
-                                        ) * 1000px
-                                    ),
-                                    var(--column-1-preferred-width)
-                                );
-
-    --column-2-width:       calc(var(--grid-width) - var(--column-1-width) - var(--column-3-width));
-    --column-3-width:       round(up, 25vw, var(--grid-size));
-
+    
     /* COLORS */
-    --background: light-dark(white, black);
-    --foreground: light-dark(black, white);
-    --heavy-grid-line: light-dark(#111, #888);
-    --light-grid-line: light-dark(#CCC, #2D2D2D);
+    --background:       light-dark(white, black);
+    --foreground:       light-dark(black, white);
+    --heavy-grid-line:  light-dark(#111, #888);
+    --light-grid-line:  light-dark(#CCC, #2D2D2D);
 }
 
+:root {
+    --column-1-width: var(--grid-size);
+    --column-2-width: calc(var(--grid-width) - var(--column-1-width) - var(--column-3-width));
+    --column-3-width: var(--grid-size);
+    
+    /* OVER 34 GRID SQUARES: Start revealing column 3 */
+    @media (min-width: 816px) {
+        /* --column-2-width: calc(32 * var(--grid-size)); */
+        --column-2-width: round(down, 60vw, var(--grid-size));
+        --column-3-width: calc(var(--grid-width) - var(--column-1-width) - var(--column-2-width));
+    }
+    /* OVER 42 GRID SQUARES: Start revealing column 1*/
+    @media (min-width: 1008px) {
+        --column-1-width: calc(var(--grid-width) - var(--column-2-width) - var(--column-3-width));
+        --column-3-width: round(down, 25vw, var(--grid-size));
+    }
 
+    /* OVER 48 GRID SQUARES: Keep growing all proprotionally*/
+    @media (min-width: 1152px) {
+        --column-1-width: round(up, 15vw, var(--grid-size));
+        --column-2-width: round(up, 60vw, var(--grid-size));
+        --column-3-width: round(up, 25vw, var(--grid-size));
+    }
+}
 
 /* TEXT */
 body {
@@ -90,7 +93,7 @@ h1, h2, h3, h4, p, a, figcaption {
 .site-header {
     display: flex;
     align-items: flex-end;
-    padding: var(--grid-size) 0 0 0;
+    padding-top: var(--grid-size);
     position: sticky;
     top:0;
     left:0;
@@ -99,15 +102,16 @@ h1, h2, h3, h4, p, a, figcaption {
 }
 
 .site-header__logo {
+    flex-basis: var(--column-1-width);
     text-align: right;
-    width: var(--column-1-width);
     font-size: var(--font-size-lg);
     padding-right: var(--grid-size);
+    min-width: 8rem;
 }
 
 .site-header__nav {
+    flex-basis: var(--column-2-width);
     display: inline-flex;
-    width: var(--column-2-width);
     gap: var(--grid-size);
 }
 
@@ -120,6 +124,7 @@ h1, h2, h3, h4, p, a, figcaption {
 /* PAGE HEADER */
 .page-header {
     display: flex;
+    flex-wrap: wrap;
     padding-top: calc(var(--grid-size) * 2);
     padding-left: var(--column-1-width);
     padding-right: var(--column-3-width);
@@ -134,7 +139,6 @@ h1, h2, h3, h4, p, a, figcaption {
 /* LEAD */
 .lead {
     margin-left: var(--column-1-width);
-    width: var(--column-2-width);
     background-size: var(--grid-size) var(--grid-size);
     background-image: linear-gradient(to top, var(--heavy-grid-line) 1px, transparent 1px); 
     margin-bottom: var(--grid-size);
@@ -145,30 +149,32 @@ h1, h2, h3, h4, p, a, figcaption {
 /* PHOTOSET */
 .photoset {
     margin-left: var(--column-1-width);
-    width: calc(var(--column-2-width) + var(--column-3-width));
     background-size: var(--grid-size) var(--grid-size);
     background-image: linear-gradient(to top, var(--heavy-grid-line) 1px, transparent 1px); 
 }
 .photoset figure {
     display: flex;
+    flex-wrap: balance;
 }
 .photoset img {
     width: var(--column-2-width);
 }
 .photoset figcaption {
-    width: var(--column-3-width);
+    min-width: 12rem;
 }
+
 
 
 /* TEMPORARY */
 img {
     max-width: 100%;
+    height: var(--grid-size) * 40;
 }
 
 
 .columns-preview .left-grid-line,
 .columns-preview .right-grid-line {
-    position: absolute;
+    position: fixed;
     height: 100%;
     left: 0;
     top: 0;
