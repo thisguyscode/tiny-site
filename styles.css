@@ -1,12 +1,15 @@
-/* RESET */
+/* RESET
+================================================*/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
 :root {
   color-scheme: light dark;
 }
+
 body {
   color: light-dark(black, white);
   background-color: light-dark(white, black);
@@ -14,7 +17,19 @@ body {
 
 
 
-/* GLOBAL VARIABLES */
+/* COSMETICS
+================================================*/
+:root {
+    --background:       light-dark(white, black);
+    --foreground:       light-dark(black, white);
+    --heavy-grid-line:  light-dark(#333, #FFF);
+    --light-grid-line:  light-dark(#EEE, #666);
+}
+
+
+
+/* TEXT & BASELINE
+================================================*/
 :root {
     /* FONT SIZE:
     ** As text is the most important thing, we define that size next 
@@ -22,15 +37,13 @@ body {
     ** but the rest of the calculations should work regardless.
     ** The non-default font sizes use REM, rounded to the nearest pixel */
     --font-size: 17px;
-    --font-size-sm: round(down, 0.8rem, 1px);
-    --font-size-lg: round(up, 2rem, 1px); 
-    --font-size-xl: round(up, 4rem, 1px);
-
-    /* GRID SIZE: */
-    --grid-size: 24px;
-
+    --font-size-sm: 14px;
+    --font-size-lg: 24px; 
+    --font-size-xl: 48px;
+    
     /* GRID:
     ** The grid scales according to the viewport size */
+    --grid-size: 24px;
     --grid-columns: round(down, calc(100vw / var(--grid-size)), 1);
     --grid-rows: round(down, calc(100vh / var(--grid-size)), 1);
     --grid-width: calc(var(--grid-columns) * var(--grid-size));
@@ -41,158 +54,202 @@ body {
 
     /* BASELINE CALCULATION: */
     --text-line-height:     round(up, 1cap, var(--grid-size));
-    --text-offset:          calc(var(--text-line-height) - round(1cap, 1px));
-    
-    /* COLORS */
-    --background:       light-dark(white, black);
-    --foreground:       light-dark(black, white);
-    --heavy-grid-line:  light-dark(#111, #888);
-    --light-grid-line:  light-dark(#CCC, #2D2D2D);
+    --text-offset:          calc(var(--text-line-height) - 1cap);
 }
 
-:root {
-    --column-1-width: var(--grid-size);
-    --column-2-width: calc(var(--grid-width) - var(--column-1-width) - var(--column-3-width));
-    --column-3-width: var(--grid-size);
-    
-    /* OVER 34 GRID SQUARES: Start revealing column 3 */
-    @media (min-width: 816px) {
-        /* --column-2-width: calc(32 * var(--grid-size)); */
-        --column-2-width: round(down, 60vw, var(--grid-size));
-        --column-3-width: calc(var(--grid-width) - var(--column-1-width) - var(--column-2-width));
-    }
-    /* OVER 42 GRID SQUARES: Start revealing column 1*/
-    @media (min-width: 1008px) {
-        --column-1-width: calc(var(--grid-width) - var(--column-2-width) - var(--column-3-width));
-        --column-3-width: round(down, 25vw, var(--grid-size));
-    }
-
-    /* OVER 48 GRID SQUARES: Keep growing all proprotionally*/
-    @media (min-width: 1152px) {
-        --column-1-width: round(up, 15vw, var(--grid-size));
-        --column-2-width: round(up, 60vw, var(--grid-size));
-        --column-3-width: round(up, 25vw, var(--grid-size));
-    }
-}
-
-/* TEXT */
 body {
     font-family: 'Helvetica';
-    font-size: var(--font-size);
-    line-height: var(--text-line-height);
+    position: relative;
+    min-height: 100vh;
 }
 
+body,
+button {
+    font-size: var(--font-size);
+    line-height: 24px;
+}
 h1, h2, h3, h4, p, a, figcaption {
     text-box: trim-both cap alphabetic;
     padding-top: var(--text-offset);
 }
 
 
+/* MEDIA RATIOS
+================================================
+** The variables for calculating ratios are baked into .media class, and set on the modifer classes
+** So it's possible to use .media without ratio (by setting --media-width/height-target
+** or create custom ratios on the fly (setting --media-width/height-multiple
+** or set a different max-width */
+/* .photoset img {
+    --w: 4;
+    --h: 3;
+    --available-width:      var(--column-2-width);
+    --available-height:     var(--grid-height);
+    --width-multiple:       calc(var(--w) / var(--h));
+    --height-multiple:      calc(var(--h) / var(--w));
+    --media-width-target:   min(var(--available-width), var(--available-height) * var(--width-multiple));
+    --media-height-target:  min(var(--available-height), var(--available-width) * var(--width-multiple));
+    
+    width: round(down, var(--media-width-target), var(--grid-size));
+    height: round(down, var(--media-height-target), var(--grid-size));
+    object-fit: cover;
+} */
 
-/* SITE HEADER */
+
+/* TEMPORARY
+================================================*/
+img {
+    max-width: 100%;
+}
+
+
+
+
+/* LAYOUT
+================================================*/
+:root {
+    /* COLUMN SIZES
+    ** For each 7 squares, the first 4 go to C2, the next 2 to C3, the last 1 to C1
+    ** The values are hard coded in, so changing these proportions would require
+    ** a rewrite */
+
+    --c1:   var(--grid-size);
+    --c2:   calc(var(--grid-width) - var(--c1) - var(--c3));
+    --c3:   var(--grid-size);;
+    
+    /* 32–41 COLUMNS: GRADUAL PROGRESSION */
+    @media (min-width: 768px) {
+        --c1: calc(
+            round(down, calc((var(--grid-columns) - 30) / 2), 1)
+            * var(--grid-size)
+        );
+
+        --c3: calc(
+            (var(--grid-columns) - 30)
+            * var(--grid-size)
+        );
+    }
+
+    /* 42+ COLUMNS: REPEATING 4:2:1 DISTRIBUTION */
+    @media (min-width: 1008px) {
+        --q: round(down, calc(var(--grid-columns) / 7), 1);
+        --r: mod(var(--grid-columns), 7);
+
+        --c1: calc(
+            var(--q) * var(--grid-size)
+        );
+
+        --c2: calc(
+            (4 * var(--q) + min(var(--r), 4))
+            * var(--grid-size)
+        );
+
+        --c3: calc(
+            (2 * var(--q) + min(max(var(--r) - 4, 0), 2))
+            * var(--grid-size)
+        );
+    }
+
+
+}
+
 .site-header {
+    --border-width: 1px;
     display: flex;
-    align-items: flex-end;
-    padding-top: var(--grid-size);
-    position: sticky;
-    top:0;
-    left:0;
-    right:0;
-    box-shadow: 0 0 0 1px var(--heavy-grid-line);
+    flex-wrap: wrap;
+    width: var(--grid-width);
+    padding-left: var(--c1);
+    padding-right: var(--c3);
+    margin-bottom: calc(var(--grid-size) - var(--border-width));
+    border-bottom: var(--border-width) solid var(--heavy-grid-line);
 }
 
 .site-header__logo {
-    flex-basis: var(--column-1-width);
-    text-align: right;
-    font-size: var(--font-size-lg);
-    padding-right: var(--grid-size);
-    min-width: 8rem;
-}
-
-.site-header__nav {
-    flex-basis: var(--column-2-width);
-    display: inline-flex;
-    gap: var(--grid-size);
+    order: 1;
+    flex-grow: 1;
+    margin-bottom: var(--grid-size);
 }
 
 .site-header__cta {
-    max-width: var(--column-3-width);
+    order: 2;
+    height: var(--grid-size);
+    margin-top: var(--grid-size);
+    padding: 0 var(--grid-size);
+    vertical-align: middle;
+    font-size: var(--font-size-sm);
+    min-width: calc(var(--grid-size) * 6);
+}
+.site-header__nav {
+    order: 3;
+    display: flex;
+    width: 100%;
+    gap: var(--grid-size);
 }
 
 
-
-/* PAGE HEADER */
 .page-header {
-    display: flex;
-    flex-wrap: wrap;
-    padding-top: calc(var(--grid-size) * 2);
-    padding-left: var(--column-1-width);
-    padding-right: var(--column-3-width);
-    box-shadow: 0 0 0 1px var(--heavy-grid-line);
-    margin-bottom: var(--grid-size);
+    --border-width: 1px;
+    width: var(--grid-width);
+    padding-left: var(--c1);
+    padding-right: var(--c3);
+    margin-bottom: calc(var(--grid-size) - var(--border-width));
+    border-bottom: var(--border-width) solid var(--heavy-grid-line);
 }
 
 .page-header h2 {
     font-size: var(--font-size-xl);
 }
 
-/* LEAD */
 .lead {
-    margin-left: var(--column-1-width);
-    background-size: var(--grid-size) var(--grid-size);
-    background-image: linear-gradient(to top, var(--heavy-grid-line) 1px, transparent 1px); 
+    width: var(--grid-width);
+    padding-left: var(--c1);
+    padding-right: var(--c3);
+    margin-bottom: var(--grid-size);
+}
+
+.photoset {
+    width: var(--grid-width);
+    padding-left: var(--c1);
+    padding-right: var(--c3);
+}
+
+
+.photoset p {
     margin-bottom: var(--grid-size);
 }
 
 
-
-/* PHOTOSET */
-.photoset {
-    margin-left: var(--column-1-width);
-    background-size: var(--grid-size) var(--grid-size);
-    background-image: linear-gradient(to top, var(--heavy-grid-line) 1px, transparent 1px); 
-}
-.photoset figure {
-    display: flex;
-    flex-wrap: balance;
-}
-.photoset img {
-    width: var(--column-2-width);
-}
-.photoset figcaption {
-    min-width: 12rem;
-}
-
-
-
-/* TEMPORARY */
-img {
-    max-width: 100%;
-    height: var(--grid-size) * 40;
-}
-
-
-.columns-preview .left-grid-line,
-.columns-preview .right-grid-line {
-    position: fixed;
-    height: 100%;
-    left: 0;
-    top: 0;
-    border-right: 1px solid var(--heavy-grid-line);
+.column-guide,
+.grid-guide {
     pointer-events: none;
+}
+
+.column-guide {
     z-index: 1;
-} 
-
-.columns-preview .left-grid-line {
-    width: var(--column-1-width);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(
+            to right,
+            transparent             calc(var(--c1) - 1px),
+            var(--heavy-grid-line)  calc(var(--c1) - 1px) calc(var(--c1)),
+            transparent var(--c1)   calc(var(--c1) + var(--c2) - 1px),
+            var(--heavy-grid-line)  calc(var(--c1) + var(--c2) - 1px) calc(var(--c1) + var(--c2)),
+            transparent             calc(var(--c1) + var(--c2)) calc(var(--c1) + var(--c2) + var(--c3))
+        )
 }
 
-.columns-preview .right-grid-line {
-    width: calc(var(--column-1-width) + var(--column-2-width));
-}
-
-.square-grid-background {
-    background-color: var(--background);
+.grid-guide {
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
     background-size: var(--grid-size) var(--grid-size);
     background-image:
         linear-gradient(to right, var(--light-grid-line) 1px, transparent 1px),
