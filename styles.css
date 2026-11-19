@@ -49,23 +49,23 @@ a {
 ================================================*/
 :root {
     --viewport-area:            calc(sqrt(calc((100vw / 1px) * (100vh / 1px ))));
-    --dynamic-grid-size:        round(up, calc((var(--viewport-area) / 30) * 1px), 1px);
-    --dynamic-font-size:        round(up, calc((var(--viewport-area) / 40) * 1px), 1px);
-    --dynamic-font-size-sm:     round(up, calc((var(--viewport-area) / 50) * 1px), 1px);
-    --dynamic-font-size-lg:     round(up, calc((var(--viewport-area) / 30) * 1px), 1px);
-    --dynamic-font-size-xl:     round(up, calc((var(--viewport-area) / 20) * 1px), 1px);
-    --dynamic-font-size-xxl:    round(up, calc((var(--viewport-area) / 10) * 1px), 1px);
+    --dynamic-grid-size:        round(up, calc((var(--viewport-area) / 40) * 1px), 1px);
+    --dynamic-font-size:        round(up, calc(var(--dynamic-grid-size) * 0.85), 1px);
+    --dynamic-font-size-sm:     round(up, calc(var(--dynamic-grid-size) * 0.75), 1px);
+    --dynamic-font-size-lg:     round(up, calc(var(--dynamic-grid-size) * 1.2), 1px);
+    --dynamic-font-size-xl:     round(up, calc(var(--dynamic-grid-size) * 2), 1px);
+    --dynamic-font-size-xxl:    round(up, calc(var(--dynamic-grid-size) * 4), 1px);
 
     /* GRID:
     ** The grid scales according to the viewport size */
-    --grid-size: clamp(16px, var(--dynamic-grid-size), 20px );
-    --grid-columns: round(down, calc(100vw / var(--grid-size)), 1);
-    --grid-rows: round(down, calc(100vh / var(--grid-size)), 1);
-    --grid-width: calc(var(--grid-columns) * var(--grid-size));
-    --grid-height: calc(var(--grid-rows) * var(--grid-size));
-    --grid-colour: light-dark(#DDD, #333);
-    --grid-margin: var(--grid-size);
-    --grid-gutter: var(--grid-size);
+    --grid-size:        clamp(8px, var(--dynamic-grid-size), 16px);
+    --grid-columns:     round(down, calc(100vw / var(--grid-size)), 1);
+    --grid-rows:        round(down, calc(100vh / var(--grid-size)), 1);
+    --grid-width:       calc(var(--grid-columns) * var(--grid-size));
+    --grid-height:      calc(var(--grid-rows) * var(--grid-size));
+    --grid-colour:      light-dark(#DDD, #333);
+    --grid-margin:      var(--grid-size);
+    --grid-gutter:      var(--grid-size);
 
     /* FONT SIZE:
     ** As text is the most important thing, we define that size next 
@@ -74,16 +74,16 @@ a {
     ** The non-default font sizes use REM, rounded to the nearest pixel */
     --font-size:        clamp(16px, var(--dynamic-font-size), 18px);
     --font-size-sm:     clamp(14px, var(--dynamic-font-size-sm), 16px);
-    --font-size-lg:     clamp(20px, var(--dynamic-font-size-lg), 32px);
+    --font-size-lg:     clamp(20px, var(--dynamic-font-size-lg), 26px);
     --font-size-xl:     clamp(28px, var(--dynamic-font-size-xl), 48px);
     --font-size-xxl:    clamp(56px, var(--dynamic-font-size-lg), 64px);
 
     /* LINE HEIGHT: */
-    --line-height:      round(up, 1cap, var(--grid-size));
-    --line-height-sm:   round(up, 1cap, var(--grid-size));
-    --line-height-lg:   round(up, 1cap, var(--grid-size));
-    --line-height-xl:   round(up, 1cap, var(--grid-size));
-    --line-height-xxl:  round(up, 1cap, var(--grid-size));
+    --line-height:      round(up, calc(1cap * 1.1), var(--grid-size));
+    --line-height-sm:   round(up, calc(1cap * 1.1), var(--grid-size));
+    --line-height-lg:   round(up, calc(1cap * 1.1), var(--grid-size));
+    --line-height-xl:   round(up, calc(1cap * 1.1), var(--grid-size));
+    --line-height-xxl:  round(up, calc(1cap * 1.1), var(--grid-size));
     
     /* BASELINE CALCULATION: */
     /* --text-line-height:     round(up, calc(1cap * 1), var(--grid-size)); */
