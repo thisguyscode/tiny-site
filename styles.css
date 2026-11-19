@@ -25,7 +25,7 @@ body {
     --heavy-grid-line:  light-dark(#333, rgba(255,255,255, 0.6));
     --light-grid-line:  light-dark(#EEE, rgba(255,255,255, 0.1));
     
-    --column-transition: 0.1s ease-out;
+    --column-transition: 0.2s ease-out;
 }
 
 
@@ -88,22 +88,36 @@ h2 {
 ** So it's possible to use .media without ratio (by setting --media-width/height-target
 ** or create custom ratios on the fly (setting --media-width/height-multiple
 ** or set a different max-width */
-/* .photoset img {
-    --w: 4;
-    --h: 3;
-    --available-width:      var(--column-2-width);
-    --available-height:     var(--grid-height);
-    --width-multiple:       calc(var(--w) / var(--h));
-    --height-multiple:      calc(var(--h) / var(--w));
-    --media-width-target:   min(var(--available-width), var(--available-height) * var(--width-multiple));
-    --media-height-target:  min(var(--available-height), var(--available-width) * var(--width-multiple));
+figure img {
+    --wr:     auto;
+    --hr:     auto;
+    --wmax:   none;
+    --hmax:   none;
+}
+
+.photoset img {
+    --width-multiple:       calc(var(--wr) / var(--hr));
+    --height-multiple:      calc(var(--hr) / var(--wr));
+
+    --width:    min(var(--wmax), calc(var(--hmax) * var(--height-multiple)));
+    --height:   min(var(--hmax), calc(var(--wmax) * var(--width-multiple)));
     
-    width: round(down, var(--media-width-target), var(--grid-size));
-    height: round(down, var(--media-height-target), var(--grid-size));
+    width: round(down, var(--height), var(--grid-size));
+    height: round(down, var(--width), var(--grid-size));
+    transition: width var(--column-transition), height var(--column-transition);
     object-fit: cover;
-} */
+}
 
 
+
+/* COMPONENTS
+================================================*/
+button {
+    height: var(--grid-size);
+    min-width: calc(var(--grid-size) * 4);
+    vertical-align: middle;
+    line-height: 1;
+}
 
 
 /* LAYOUT
@@ -113,28 +127,33 @@ h2 {
     ** For each 7 squares, the first 4 go to C2, the next 2 to C3, the last 1 to C1
     ** The values are hard coded in, so changing these proportions would require
     ** a rewrite */
+    --q: round(down, calc(var(--grid-columns) / 7), 1);
+    --r: mod(var(--grid-columns), 7);
 
     --c1:   var(--grid-size);
     --c2:   calc(var(--grid-width) - var(--c1) - var(--c3));
     --c3:   var(--grid-size);;
     
-    /* 32–41 COLUMNS: GRADUAL PROGRESSION */
-    @media (min-width: 768px) {
-        --c1: calc(
-            round(down, calc((var(--grid-columns) - 30) / 2), 1)
-            * var(--grid-size)
-        );
-
+    
+    /* 35 COLUMNS: SHOW C3 */
+    @media (min-width: 840px) {
         --c3: calc(
-            (var(--grid-columns) - 30)
+            (2 * var(--q) + min(max(var(--r) - 4, 0), 2))
             * var(--grid-size)
         );
     }
 
-    /* 42+ COLUMNS: REPEATING 4:2:1 DISTRIBUTION */
+    /* 42 SQUARES: SHOW C1
+    ** C1 = 6, C2 = 24, C3 = 12 */
     @media (min-width: 1008px) {
-        --q: round(down, calc(var(--grid-columns) / 7), 1);
-        --r: mod(var(--grid-columns), 7);
+        --c1: calc(
+            var(--q) * var(--grid-size)
+        );
+    }
+
+    /* 49+ SQUARES: REPEATING 4:2:1 DISTRIBUTION
+    ** C1 = 7, C2 = 28, C3 = 14 */
+    @media (min-width: 1176px) {
 
         --c1: calc(
             var(--q) * var(--grid-size)
@@ -190,6 +209,7 @@ h2 {
 }
 
 .site-header__cta {
+    display: flex;
     grid-row: 1;
     justify-self: end;
 }
@@ -198,18 +218,21 @@ h2 {
     font-size: var(--font-size-xl);
 }
 
-@media (min-width: 912px) {
-     .site-header__cta {
+.photoset figure {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--grid-size);
+}
+
+
+@media (min-width: 840px) {
+    .site-header__cta {
         grid-column: 3;
         justify-self: start;
     }
     .site-header__nav {
         grid-row: 1;
         justify-self: end;
-    }
-    .site-header__logo {
-        grid-column: 1;
-        justify-self: right;
     }
     .photoset figure {
         display: contents;
@@ -223,6 +246,14 @@ h2 {
         grid-column: 3 / span 1;
     }
 }
+
+@media (min-width: 1008px) {
+    .site-header__logo {
+        grid-column: 1;
+        justify-self: right;
+    }
+}
+
 
 
 /* TEMPORARY
@@ -253,6 +284,10 @@ img {
 }
 .column-guide > :not(:last-of-type) {
     border-right: 1px solid var(--heavy-grid-line);
+}
+
+.column-guide > * {
+    /* background: rgba(227, 23, 23, 0.3); */
 }
 
 
