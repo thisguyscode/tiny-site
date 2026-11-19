@@ -7,46 +7,57 @@
 }
 
 :root {
-  color-scheme: light dark;
+    color-scheme: light dark;
 }
 
 
 
-/* COSMETICS
+/* COLORS
 ================================================*/
 :root {
-    /* Named colors */
-    --ink-black:        7, 16, 19;
-    --off-white:        252, 250, 248;
-    --light-grey:       231, 214, 198;
-    --moss-green:       120, 188, 97;
-
-    /* Semantic */
-    --background:       light-dark(rgba(var(--off-white)), rgba(var(--ink-black)));
-    --foreground:       light-dark(rgba(var(--ink-black)), rgba(var(--off-white)));
-    --foreground-light: light-dark(rgba(var(--ink-black)), rgba(var(--light-grey)));
-    --overlay:          light-dark(rgba(var(--off-white), 0.75), rgba(var(--ink-black), 0.75));
-    /* --heavy-grid-line:  light-dark(rgba(var(--ink-black), 0.5), rgba(var(--off-white), 1)); */
-    --medium-grid-line: light-dark(rgba(var(--ink-black), 0.2), rgba(var(--off-white), 0.3));
-    --light-grid-line:  light-dark(rgba(var(--ink-black), 0.1), rgba(var(--off-white), 0.05));
+    /* NAMED */
+    --carbon-black:     hsla(0, 0%, 5%, 1);
+    --ink-black:        hsla(120, 2%, 13%, 1);
+    --dim-grey:         hsla(120, 1%, 38%, 1);
+    --alabaster-grey:   rgb(222, 220, 217);
+    --soft-linen:       hsla(52, 17%, 91%, 1);
+    --platinum:         hsla(210, 13%, 94%, 1);
+    --ghost-white:      hsla(240, 100%, 99%, 1);
     
-    --accent-color-1:   light-dark(rgba(var(--moss-green)), rgba(var(--moss-green)));
+    /* THEME */
+    --neutral-1:        var(--carbon-black);
+    --neutral-2:        var(--ink-black);
+    --neutral-3:        var(--dim-grey);
+    --neutral-4:        var(--alabaster-grey);
+    --neutral-5:        var(--soft-linen);
+    --neutral-6:        var(--platinum);
+    --neutral-7:        var(--ghost-white);
 
+    --background:       light-dark(var(--neutral-7), var(--neutral-1));
+    --foreground:       light-dark(var(--neutral-2), var(--neutral-7));
+    --foreground-light: light-dark(var(--neutral-3), var(--neutral-5));
 
-    --surface:          light-dark(#FFF, #222);
-    
-    --layout-transition: 0.2s ease-out;
+    --heavy-grid-line:  light-dark(var(--neutral-4), var(--neutral-7));
+    --medium-grid-line: light-dark(var(--neutral-3), var(--neutral-3));
+    --light-grid-line:  light-dark(var(--neutral-2), var(--neutral-2));
 }
 
 body {
-  color: light-dark(var(--foreground), var(--foreground));
-  background-color: light-dark(var(--background), var(--background));
+    color: light-dark(var(--foreground), var(--foreground));
+    background-color: light-dark(var(--background), var(--background));
 }
 
 a {
     color:  var(--foreground);
 }
 
+
+
+/* MOTION
+================================================*/
+:root {
+    --layout-transition: 0.2s ease-out;
+}
 
 
 
