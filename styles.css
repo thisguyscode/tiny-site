@@ -24,6 +24,8 @@ body {
     --foreground:       light-dark(black, white);
     --heavy-grid-line:  light-dark(#333, rgba(255,255,255, 0.6));
     --light-grid-line:  light-dark(#EEE, rgba(255,255,255, 0.1));
+    
+    --column-transition: 0.1s ease-out;
 }
 
 
@@ -156,6 +158,7 @@ h2 {
     grid-template-columns: var(--c1) var(--c2) var(--c3);
     margin-bottom: calc(var(--grid-size) - var(--border-width));
     border-bottom: var(--border-width) solid var(--heavy-grid-line);
+    transition: grid-template-columns var(--column-transition);
 }
 
 .grid > * {
@@ -236,21 +239,22 @@ img {
 .column-guide {
     z-index: 1;
     position: absolute;
+    display: grid;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
     bottom: 0;
-    background-image:
-        linear-gradient(
-            to right,
-            transparent             calc(var(--c1) - 1px),
-            var(--heavy-grid-line)  calc(var(--c1) - 1px) calc(var(--c1)),
-            transparent var(--c1)   calc(var(--c1) + var(--c2) - 1px),
-            var(--heavy-grid-line)  calc(var(--c1) + var(--c2) - 1px) calc(var(--c1) + var(--c2)),
-            transparent             calc(var(--c1) + var(--c2)) calc(var(--c1) + var(--c2) + var(--c3))
-        )
+    grid-template-columns: var(--c1) var(--c2) var(--c3);
+    transition: grid-template-columns var(--column-transition);
 }
+.column-guide > * {
+    height: 100%;
+}
+.column-guide > :not(:last-of-type) {
+    border-right: 1px solid var(--heavy-grid-line);
+}
+
 
 .grid-guide {
     z-index: -1;
