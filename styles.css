@@ -38,10 +38,11 @@ body {
     ** I might come back later and make this a dynamic value,
     ** but the rest of the calculations should work regardless.
     ** The non-default font sizes use REM, rounded to the nearest pixel */
-    --font-size: 17px;
-    --font-size-sm: 14px;
-    --font-size-lg: 28px; 
-    --font-size-xl: 68px;
+    --font-size: 18px;
+    --font-size-sm: 16px;
+    --font-size-lg: 22px; 
+    --font-size-xl: 32px;
+    --font-size-xxl: 68px;
     
     /* GRID:
     ** The grid scales according to the viewport size */
@@ -55,7 +56,7 @@ body {
     --grid-gutter: var(--grid-size);
 
     /* BASELINE CALCULATION: */
-    --text-line-height:     round(up, calc(1cap + 1px), var(--grid-size));
+    --text-line-height:     round(up, calc(1cap * 1), var(--grid-size));
     --text-offset:          calc(var(--text-line-height) - 1cap);
 }
 
@@ -88,22 +89,21 @@ h2 {
 ** So it's possible to use .media without ratio (by setting --media-width/height-target
 ** or create custom ratios on the fly (setting --media-width/height-multiple
 ** or set a different max-width */
-figure img {
+.photoset img {
     --wr:     auto;
     --hr:     auto;
-    --wmax:   none;
-    --hmax:   none;
-}
+    --wmax: var(--c2);
+    --hmax: calc(var(--grid-height) - (var(--grid-size) * 6));
 
-.photoset img {
-    --width-multiple:       calc(var(--wr) / var(--hr));
-    --height-multiple:      calc(var(--hr) / var(--wr));
+    --width-multiple:   calc(var(--wr) / var(--hr));
+    --height-multiple:  calc(var(--hr) / var(--wr));
 
-    --width:    min(var(--wmax), calc(var(--hmax) * var(--height-multiple)));
-    --height:   min(var(--hmax), calc(var(--wmax) * var(--width-multiple)));
+    --width:            min(var(--wmax), calc(var(--hmax) * var(--width-multiple)));
+    --height:           min(var(--hmax), calc(var(--wmax) * var(--height-multiple)));
     
-    width: round(down, var(--height), var(--grid-size));
-    height: round(down, var(--width), var(--grid-size));
+    width:              round(down, var(--width), var(--grid-size));
+    height:             round(down, var(--height), var(--grid-size));
+    
     transition: width var(--column-transition), height var(--column-transition);
     object-fit: cover;
 }
@@ -175,7 +175,7 @@ button {
     --border-width: 1px;
     display: grid;
     grid-template-columns: var(--c1) var(--c2) var(--c3);
-    margin-bottom: calc(var(--grid-size) - var(--border-width));
+    margin-bottom: calc((var(--grid-size) * 2) - var(--border-width));
     border-bottom: var(--border-width) solid var(--heavy-grid-line);
     transition: grid-template-columns var(--column-transition);
 }
@@ -188,6 +188,7 @@ button {
 /* SECTIONS
 ================================================*/
 .site-header {
+    padding-top: var(--grid-size);
     align-items: end;
     position: sticky;
     top: 0;
@@ -196,37 +197,56 @@ button {
 }
 
 .site-header__logo {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
     grid-row: 1;
 }
 
 .site-header__nav {
     display: flex;
-    /* justify-self: end; */
+    justify-self: end;
     gap: var(--grid-size);
-    min-height: calc(var(--grid-size) * 2);
+    max-width: calc(var(--c2) - 8rem);
     align-items: end;
+    grid-row: 1;
 }
 
 .site-header__cta {
     display: flex;
     grid-row: 1;
     justify-self: end;
+    display: none;
 }
 
 .page-header h2 {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-xxl);
+}
+
+.lead p {
+    font-size: var(--font-size-lg);
+    max-width: 32em;
+}
+
+.photoset h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--grid-size);
+}
+.photoset p {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--grid-size);
 }
 
 .photoset figure {
-    display: flex;
-    flex-direction: column;
     margin-bottom: var(--grid-size);
+}
+
+.photoset img {
+    display: block;
 }
 
 
 @media (min-width: 840px) {
     .site-header__cta {
+        display: flex;
         grid-column: 3;
         justify-self: start;
     }
@@ -235,12 +255,14 @@ button {
         justify-self: end;
     }
     .photoset figure {
-        display: contents;
+        grid-column: 1 / span 3;
+        display: grid;
         grid-template-columns: subgrid;
 
     }
     .photoset img {
         grid-column: 2;
+        justify-self: end;
     }
     .photoset figcaption {
         grid-column: 3 / span 1;
