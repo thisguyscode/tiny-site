@@ -98,8 +98,10 @@ h2 {
     --width-multiple:   calc(var(--wr) / var(--hr));
     --height-multiple:  calc(var(--hr) / var(--wr));
 
-    --width:            min(var(--wmax), calc(var(--hmax) * var(--width-multiple)));
-    --height:           min(var(--hmax), calc(var(--wmax) * var(--height-multiple)));
+    --max: min(var(--wmax), var(--hmax));
+
+    --width:            min(var(--max), calc(var(--max) * var(--width-multiple)));
+    --height:           min(var(--max), calc(var(--max) * var(--height-multiple)));
     
     width:              round(down, var(--width), var(--grid-size));
     height:             round(down, var(--height), var(--grid-size));
