@@ -10,43 +10,55 @@
   color-scheme: light dark;
 }
 
-body {
-  color: light-dark(var(--foreground), var(--foreground));
-  background-color: light-dark(var(--background), var(--background));
-}
-
 
 
 /* COSMETICS
 ================================================*/
 :root {
-    --background:       light-dark(white, #111);
-    --foreground:       light-dark(black, white);
-    --heavy-grid-line:  light-dark(#333, rgba(255,255,255, 0.6));
-    --light-grid-line:  light-dark(#EEE, rgba(255,255,255, 0.1));
+    /* Named colors */
+    --ink-black:        7, 16, 19;
+    --off-white:        252, 250, 248;
+    --moss-green:       120, 188, 97;
+
+    /* Semantic */
+    --background:       light-dark(rgba(var(--off-white)), rgba(var(--ink-black)));
+    --foreground:       light-dark(rgba(var(--ink-black)), rgba(var(--off-white)));
+    --heavy-grid-line:  light-dark(rgba(var(--ink-black), 0.5), rgba(var(--off-white), 0.5));
+    --medium-grid-line: light-dark(rgba(var(--ink-black), 0.15), rgba(var(--off-white), 0.15));
+    --light-grid-line:  light-dark(rgba(var(--ink-black), 0.075), rgba(var(--off-white), 0.075));
+
+
+    --surface:          light-dark(#FFF, #222);
     
     --column-transition: 0.2s ease-out;
 }
+
+body {
+  color: light-dark(var(--foreground), var(--foreground));
+  background-color: light-dark(var(--background), var(--background));
+}
+
+a {
+    color:  var(--accent-color-1);
+}
+
 
 
 
 /* TEXT & BASELINE
 ================================================*/
 :root {
-    /* FONT SIZE:
-    ** As text is the most important thing, we define that size next 
-    ** I might come back later and make this a dynamic value,
-    ** but the rest of the calculations should work regardless.
-    ** The non-default font sizes use REM, rounded to the nearest pixel */
-    --font-size: 18px;
-    --font-size-sm: 16px;
-    --font-size-lg: 22px; 
-    --font-size-xl: 32px;
-    --font-size-xxl: 68px;
-    
+    --viewport-area:            calc(sqrt(calc((100vw / 1px) * (100vh / 1px ))));
+    --dynamic-grid-size:        round(up, calc((var(--viewport-area) / 30) * 1px), 1px);
+    --dynamic-font-size:        round(up, calc((var(--viewport-area) / 40) * 1px), 1px);
+    --dynamic-font-size-sm:     round(up, calc((var(--viewport-area) / 50) * 1px), 1px);
+    --dynamic-font-size-lg:     round(up, calc((var(--viewport-area) / 30) * 1px), 1px);
+    --dynamic-font-size-xl:     round(up, calc((var(--viewport-area) / 20) * 1px), 1px);
+    --dynamic-font-size-xxl:    round(up, calc((var(--viewport-area) / 10) * 1px), 1px);
+
     /* GRID:
     ** The grid scales according to the viewport size */
-    --grid-size: 24px;
+    --grid-size: clamp(16px, var(--dynamic-grid-size), 20px );
     --grid-columns: round(down, calc(100vw / var(--grid-size)), 1);
     --grid-rows: round(down, calc(100vh / var(--grid-size)), 1);
     --grid-width: calc(var(--grid-columns) * var(--grid-size));
@@ -55,9 +67,27 @@ body {
     --grid-margin: var(--grid-size);
     --grid-gutter: var(--grid-size);
 
+    /* FONT SIZE:
+    ** As text is the most important thing, we define that size next 
+    ** I might come back later and make this a dynamic value,
+    ** but the rest of the calculations should work regardless.
+    ** The non-default font sizes use REM, rounded to the nearest pixel */
+    --font-size:        clamp(16px, var(--dynamic-font-size), 18px);
+    --font-size-sm:     clamp(14px, var(--dynamic-font-size-sm), 16px);
+    --font-size-lg:     clamp(20px, var(--dynamic-font-size-lg), 32px);
+    --font-size-xl:     clamp(28px, var(--dynamic-font-size-xl), 48px);
+    --font-size-xxl:    clamp(56px, var(--dynamic-font-size-lg), 64px);
+
+    /* LINE HEIGHT: */
+    --line-height:      round(up, 1cap, var(--grid-size));
+    --line-height-sm:   round(up, 1cap, var(--grid-size));
+    --line-height-lg:   round(up, 1cap, var(--grid-size));
+    --line-height-xl:   round(up, 1cap, var(--grid-size));
+    --line-height-xxl:  round(up, 1cap, var(--grid-size));
+    
     /* BASELINE CALCULATION: */
-    --text-line-height:     round(up, calc(1cap * 1), var(--grid-size));
-    --text-offset:          calc(var(--text-line-height) - 1cap);
+    /* --text-line-height:     round(up, calc(1cap * 1), var(--grid-size)); */
+    --text-offset:          calc(1lh - 1cap);
 }
 
 body {
@@ -69,7 +99,7 @@ body {
 body,
 button {
     font-size: var(--font-size);
-    line-height: var(--text-line-height);
+    line-height: var(--line-height);
 }
 h1, h2, h3, h4, p, a, figcaption {
     text-box: trim-both cap alphabetic;
@@ -78,9 +108,11 @@ h1, h2, h3, h4, p, a, figcaption {
 
 h1 {
     font-size: var(--font-size-xl);
+    line-height: var(--line-height-xl);
 }
 h2 {
     font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
 }
 
 /* MEDIA RATIOS
@@ -93,14 +125,13 @@ h2 {
     --wr:       auto;
     --hr:       auto;
     --wmax:     var(--c2);
-    --hmax:     calc(var(--grid-height) - (var(--grid-size) * 6));
+    --hmax:     var(--grid-height);
     --sf:       1;
 
     --width-multiple:   calc(var(--wr) / var(--hr));
     --height-multiple:  calc(var(--hr) / var(--wr));
 
     --max: min(var(--wmax), var(--hmax));
-
 
     --width:            calc(min(var(--max), calc(var(--max) * var(--width-multiple))) * var(--sf));
     --height:           calc(min(var(--max), calc(var(--max) * var(--height-multiple))) * var(--sf));
@@ -140,36 +171,26 @@ button {
     
     
     /* 35 COLUMNS: SHOW C3 */
-    @media (min-width: 840px) {
-        --c3: calc(
-            (2 * var(--q) + min(max(var(--r) - 4, 0), 2))
-            * var(--grid-size)
+    /* @media (min-width: 840px) {
+        --c1: calc(
+            var(--q) * var(--grid-size)
         );
-    }
+        
+    } */
 
     /* 42 SQUARES: SHOW C1
     ** C1 = 6, C2 = 24, C3 = 12 */
     @media (min-width: 1008px) {
-        --c1: calc(
-            var(--q) * var(--grid-size)
-        );
+        --c1: calc(var(--q) * var(--grid-size));
+        --c3: calc(var(--q) * var(--grid-size));
     }
 
     /* 49+ SQUARES: REPEATING 4:2:1 DISTRIBUTION
     ** C1 = 7, C2 = 28, C3 = 14 */
     @media (min-width: 1176px) {
 
-        --c1: calc(
-            var(--q) * var(--grid-size)
-        );
-
         --c2: calc(
-            (4 * var(--q) + min(var(--r), 4))
-            * var(--grid-size)
-        );
-
-        --c3: calc(
-            (2 * var(--q) + min(max(var(--r) - 4, 0), 2))
+            (5 * var(--q) + min(var(--r), 5))
             * var(--grid-size)
         );
     }
@@ -202,6 +223,7 @@ button {
 
 .site-header__logo {
     font-size: var(--font-size-xl);
+    line-height: var(--line-height-xl);
     grid-row: 1;
 }
 
@@ -223,23 +245,32 @@ button {
 
 .page-header h2 {
     font-size: var(--font-size-xxl);
+    line-height: var(--line-height-xxl);
 }
 
 .lead p {
     font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
     max-width: 32em;
 }
 
 .photoset h3 {
     font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
     margin-bottom: var(--grid-size);
 }
 .photoset p {
     font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
     margin-bottom: var(--grid-size);
 }
 
-.photoset figure {
+.page-contents {
+    background-size: var(--grid-size) var(--grid-size);
+    background-image:
+        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
+}
+.photoset {
     margin-bottom: var(--grid-size);
 }
 
@@ -248,7 +279,7 @@ button {
 }
 
 
-@media (min-width: 840px) {
+@media (min-width: 1008px) {
     .site-header__cta {
         display: flex;
         grid-column: 3;
@@ -258,22 +289,6 @@ button {
         grid-row: 1;
         justify-self: end;
     }
-    .photoset figure {
-        grid-column: 1 / span 3;
-        display: grid;
-        grid-template-columns: subgrid;
-
-    }
-    .photoset img {
-        grid-column: 2;
-        justify-self: end;
-    }
-    .photoset figcaption {
-        grid-column: 3 / span 1;
-    }
-}
-
-@media (min-width: 1008px) {
     .site-header__logo {
         grid-column: 1;
         justify-self: right;
