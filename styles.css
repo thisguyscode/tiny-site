@@ -90,18 +90,20 @@ h2 {
 ** or create custom ratios on the fly (setting --media-width/height-multiple
 ** or set a different max-width */
 .photoset img {
-    --wr:     auto;
-    --hr:     auto;
-    --wmax: var(--c2);
-    --hmax: calc(var(--grid-height) - (var(--grid-size) * 6));
+    --wr:       auto;
+    --hr:       auto;
+    --wmax:     var(--c2);
+    --hmax:     calc(var(--grid-height) - (var(--grid-size) * 6));
+    --sf:       1;
 
     --width-multiple:   calc(var(--wr) / var(--hr));
     --height-multiple:  calc(var(--hr) / var(--wr));
 
     --max: min(var(--wmax), var(--hmax));
 
-    --width:            min(var(--max), calc(var(--max) * var(--width-multiple)));
-    --height:           min(var(--max), calc(var(--max) * var(--height-multiple)));
+
+    --width:            calc(min(var(--max), calc(var(--max) * var(--width-multiple))) * var(--sf));
+    --height:           calc(min(var(--max), calc(var(--max) * var(--height-multiple))) * var(--sf));
     
     width:              round(down, var(--width), var(--grid-size));
     height:             round(down, var(--height), var(--grid-size));
