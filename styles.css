@@ -26,9 +26,9 @@
     --foreground:       light-dark(rgba(var(--ink-black)), rgba(var(--off-white)));
     --foreground-light: light-dark(rgba(var(--ink-black)), rgba(var(--light-grey)));
     --overlay:          light-dark(rgba(var(--off-white), 0.75), rgba(var(--ink-black), 0.75));
-    --heavy-grid-line:  light-dark(rgba(var(--ink-black), 0.5), rgba(var(--off-white), 0.5));
+    /* --heavy-grid-line:  light-dark(rgba(var(--ink-black), 0.5), rgba(var(--off-white), 1)); */
     --medium-grid-line: light-dark(rgba(var(--ink-black), 0.2), rgba(var(--off-white), 0.3));
-    --light-grid-line:  light-dark(rgba(var(--ink-black), 0.1), rgba(var(--off-white), 0.1));
+    --light-grid-line:  light-dark(rgba(var(--ink-black), 0.1), rgba(var(--off-white), 0.05));
     
     --accent-color-1:   light-dark(rgba(var(--moss-green)), rgba(var(--moss-green)));
 
@@ -44,7 +44,7 @@ body {
 }
 
 a {
-    color:  var(--accent-color-1);
+    color:  var(--foreground);
 }
 
 
@@ -75,13 +75,13 @@ a {
     --dynamic-font-size:        round(up, calc(var(--grid-size) * 0.7), 1px);
     --dynamic-font-size-sm:     round(up, calc(var(--grid-size) * 0.6), 1px);
     --dynamic-font-size-lg:     round(up, calc(var(--grid-size) * 0.8), 1px);
-    --dynamic-font-size-xl:     round(up, calc(var(--grid-size) * 1.5), 1px);
+    --dynamic-font-size-xl:     round(up, calc(var(--grid-size) * 1.3), 1px);
     --dynamic-font-size-xxl:    round(up, calc(var(--grid-size) * 2), 1px);
 
     --font-size:        clamp(16px, var(--dynamic-font-size), 18px);
     --font-size-sm:     clamp(14px, var(--dynamic-font-size-sm), 16px);
     --font-size-lg:     clamp(17px, var(--dynamic-font-size-lg), 22px);
-    --font-size-xl:     clamp(28px, var(--dynamic-font-size-xl), 48px);
+    --font-size-xl:     clamp(20px, var(--dynamic-font-size-xl), 48px);
     --font-size-xxl:    clamp(40px, var(--dynamic-font-size-xxl), 64px);
 
     /* LINE HEIGHT: */
@@ -114,8 +114,29 @@ h1, h2, h3, h4, p, a, figcaption {
     transition: font-size var(--layout-transition), line-height var(--layout-transition);
 }
 
+h1 {
+    font-size: var(--font-size-xxl);
+    line-height: var(--line-height-xxl);
+}
+
+h2 {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-xl);
+}
+
+h3 {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+}
+
+h4 {
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+}
+
 p {
     color: var(--foreground-light);
+    max-width: 35em;
 }
 
 .site-header__logo {
@@ -131,6 +152,12 @@ p {
 .lead p {
     font-size: var(--font-size-lg);
     line-height: var(--line-height-lg);
+}
+
+.topic h2 {
+    font-size: var(--font-size-xxl);
+    line-height: var(--line-height-xxl);
+    margin-bottom: var(--grid-size);
 }
 
 
@@ -243,6 +270,7 @@ button {
 
 .site-header__logo {
     grid-row: 1;
+    margin-right: var(--grid-size);
 }
 
 .site-header__nav {
@@ -263,9 +291,20 @@ button {
 
 .page-header h2 {
 }
-
+.lead {
+    background-size: 1lh 1lh;
+    background-image:
+        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
+}
 .lead p {
     max-width: 32em;
+}
+
+.photoset {
+    margin-bottom: var(--grid-size);
+    background-size: 1lh 1lh;
+    background-image:
+        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
 }
 
 .photoset h3 {
@@ -276,16 +315,21 @@ button {
 }
 
 .page-contents {
-    background-size: 1lh 1lh;
-    background-image:
-        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
 }
+
 .photoset {
     margin-bottom: var(--grid-size);
 }
 
 .photoset img {
     display: block;
+}
+
+.topic {
+    margin-bottom: var(--grid-size);
+    background-size: 1lh 1lh;
+    background-image:
+        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
 }
 
 
