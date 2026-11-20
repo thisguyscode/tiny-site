@@ -64,41 +64,39 @@ a {
 /* TEXT & BASELINE
 ================================================*/
 :root {
+    /* VIEWPORT: */
     --viewport-area:            calc(sqrt(calc((100vw / 1px) * (100vh / 1px ))));
-    --dynamic-grid-size:        round(up, calc((var(--viewport-area) / 30) * 1px), 1px);
-
+    
     /* GRID: */
-    --grid-size:        clamp(20px, var(--dynamic-grid-size), 24px);
-    --grid-columns:     round(down, calc(100vw / var(--grid-size)), 1);
-    --grid-rows:        round(down, calc(100vh / var(--grid-size)), 1);
-    --grid-width:       calc(var(--grid-columns) * var(--grid-size));
-    --grid-height:      calc(var(--grid-rows) * var(--grid-size));
-    --grid-colour:      light-dark(#DDD, #333);
-    --grid-margin:      var(--grid-size);
-    --grid-gutter:      var(--grid-size);
+    --grid-size-dynamic:        round(up, calc((var(--viewport-area) / 30) * 1px), 1px);
+    --grid-size:                clamp(20px, var(--grid-size-dynamic), 24px);
+    --grid-columns:             round(down, calc(100vw / var(--grid-size)), 1);
+    --grid-rows:                round(down, calc(100vh / var(--grid-size)), 1);
+    --grid-width:               calc(var(--grid-columns) * var(--grid-size));
+    --grid-height:              calc(var(--grid-rows) * var(--grid-size));
 
     /* FONT SIZE: */
-    --dynamic-font-size:        round(up, calc(var(--grid-size) * 0.7), 1px);
-    --dynamic-font-size-sm:     round(up, calc(var(--grid-size) * 0.6), 1px);
-    --dynamic-font-size-lg:     round(up, calc(var(--grid-size) * 0.8), 1px);
-    --dynamic-font-size-xl:     round(up, calc(var(--grid-size) * 1.3), 1px);
-    --dynamic-font-size-xxl:    round(up, calc(var(--grid-size) * 2), 1px);
-
-    --font-size:        clamp(16px, var(--dynamic-font-size), 18px);
-    --font-size-sm:     clamp(14px, var(--dynamic-font-size-sm), 16px);
-    --font-size-lg:     clamp(17px, var(--dynamic-font-size-lg), 22px);
-    --font-size-xl:     clamp(20px, var(--dynamic-font-size-xl), 48px);
-    --font-size-xxl:    clamp(40px, var(--dynamic-font-size-xxl), 64px);
+    --font-size-dynamic:        round(up, calc(var(--grid-size) * 0.7), 1px);
+    --font-size-dynamic-sm:     round(up, calc(var(--grid-size) * 0.6), 1px);
+    --font-size-dynamic-lg:     round(up, calc(var(--grid-size) * 0.9), 1px);
+    --font-size-dynamic-xl:     round(up, calc(var(--grid-size) * 1.3), 1px);
+    --font-size-dynamic-xxl:    round(up, calc(var(--grid-size) * 2.0), 1px);
+    
+    --font-size:                clamp(16px, var(--font-size-dynamic), 18px);
+    --font-size-sm:             clamp(14px, var(--font-size-dynamic-sm), 16px);
+    --font-size-lg:             clamp(20px, var(--font-size-dynamic-lg), 24px);
+    --font-size-xl:             clamp(24px, var(--font-size-dynamic-xl), 48px);
+    --font-size-xxl:            clamp(40px, var(--font-size-dynamic-xxl), 64px);
 
     /* LINE HEIGHT: */
-    --line-height:      var(--grid-size);
-    --line-height-sm:   var(--grid-size);
-    --line-height-lg:   var(--grid-size);
-    --line-height-xl:   calc(var(--grid-size) * 2);
-    --line-height-xxl:  calc(var(--grid-size) * 2);
+    --line-height:              var(--grid-size);
+    --line-height-sm:           var(--grid-size);
+    --line-height-lg:           var(--grid-size);
+    --line-height-xl:           calc(var(--grid-size) * 2);
+    --line-height-xxl:          calc(var(--grid-size) * 2);
     
     /* BASELINE CALCULATION: */
-    --text-offset:          calc(1lh - 1cap);
+    --text-offset:              calc(1lh - 1cap);
 }
 
 body {
@@ -114,7 +112,7 @@ h1, h2, h3, h4, p, a, figcaption {
                 line-height var(--layout-transition);
 }
 
-.u-show-baseline {
+.grid--show-baseline {
     background-size: 1lh 1lh;
     background-image:
         linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
@@ -222,6 +220,12 @@ body {
     --border-width: 1px;
     margin-bottom: calc(var(--margin-bottom) - var(--border-width));
     border-bottom: var(--border-width) solid var(--heavy-grid-line);
+}
+
+.grid--show-baseline {
+    background-size: 1lh 1lh;
+    background-image:
+        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
 }
 
 
