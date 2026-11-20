@@ -67,8 +67,7 @@ a {
     --viewport-area:            calc(sqrt(calc((100vw / 1px) * (100vh / 1px ))));
     --dynamic-grid-size:        round(up, calc((var(--viewport-area) / 30) * 1px), 1px);
 
-    /* GRID:
-    ** The grid scales according to the viewport size */
+    /* GRID: */
     --grid-size:        clamp(20px, var(--dynamic-grid-size), 24px);
     --grid-columns:     round(down, calc(100vw / var(--grid-size)), 1);
     --grid-rows:        round(down, calc(100vh / var(--grid-size)), 1);
@@ -78,11 +77,7 @@ a {
     --grid-margin:      var(--grid-size);
     --grid-gutter:      var(--grid-size);
 
-    /* FONT SIZE:
-    ** As text is the most important thing, we define that size next 
-    ** I might come back later and make this a dynamic value,
-    ** but the rest of the calculations should work regardless.
-    ** The non-default font sizes use REM, rounded to the nearest pixel */
+    /* FONT SIZE: */
     --dynamic-font-size:        round(up, calc(var(--grid-size) * 0.7), 1px);
     --dynamic-font-size-sm:     round(up, calc(var(--grid-size) * 0.6), 1px);
     --dynamic-font-size-lg:     round(up, calc(var(--grid-size) * 0.8), 1px);
@@ -103,18 +98,11 @@ a {
     --line-height-xxl:  calc(var(--grid-size) * 2);
     
     /* BASELINE CALCULATION: */
-    /* --text-line-height:     round(up, calc(1cap * 1), var(--grid-size)); */
     --text-offset:          calc(1lh - 1cap);
 }
 
 body {
     font-family: 'Arial';
-    position: relative;
-    min-height: 100vh;
-}
-
-body,
-button {
     font-size: var(--font-size);
     line-height: var(--line-height);
 }
@@ -122,55 +110,15 @@ button {
 h1, h2, h3, h4, p, a, figcaption {
     text-box: trim-both cap alphabetic;
     padding-top: var(--text-offset);
-    transition: font-size var(--layout-transition), line-height var(--layout-transition);
+    transition: font-size var(--layout-transition),
+                line-height var(--layout-transition);
 }
 
-h1 {
-    font-size: var(--font-size-xxl);
-    line-height: var(--line-height-xxl);
+.u-show-baseline {
+    background-size: 1lh 1lh;
+    background-image:
+        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
 }
-
-h2 {
-    font-size: var(--font-size-xl);
-    line-height: var(--line-height-xl);
-}
-
-h3 {
-    font-size: var(--font-size-lg);
-    line-height: var(--line-height-lg);
-}
-
-h4 {
-    font-size: var(--font-size);
-    line-height: var(--line-height);
-}
-
-p {
-    color: var(--foreground-light);
-    max-width: 35em;
-}
-
-.site-header__logo {
-    font-size: var(--font-size-xl);
-    line-height: var(--line-height-xl);
-}
-
-.page-header__title {
-    font-size: var(--font-size-xxl);
-    line-height: var(--line-height-xxl);
-}
-
-.lead p {
-    font-size: var(--font-size-lg);
-    line-height: var(--line-height-lg);
-}
-
-.topic h2 {
-    font-size: var(--font-size-xxl);
-    line-height: var(--line-height-xxl);
-    margin-bottom: var(--grid-size);
-}
-
 
 /* MEDIA RATIOS
 ================================================
@@ -191,11 +139,11 @@ p {
 
     --max: min(var(--wmax), var(--hmax));
 
-    --width:            calc(min(var(--max), calc(var(--max) * var(--width-multiple))) * var(--sf));
-    --height:           calc(min(var(--max), calc(var(--max) * var(--height-multiple))) * var(--sf));
+    --width:    calc(min(var(--max), calc(var(--max) * var(--width-multiple))) * var(--sf));
+    --height:   calc(min(var(--max), calc(var(--max) * var(--height-multiple))) * var(--sf));
     
-    width:              round(down, var(--width), var(--rounding));
-    height:             round(down, var(--height), var(--rounding));
+    width:      round(down, var(--width), var(--rounding));
+    height:     round(down, var(--height), var(--rounding));
     
     transition: width var(--layout-transition), height var(--layout-transition);
     object-fit: cover;
@@ -207,7 +155,7 @@ p {
 ================================================*/
 button {
     height: var(--grid-size);
-    min-width: calc(var(--grid-size) * 4);
+    font-size: var(--font-size);
     vertical-align: middle;
     line-height: 1;
 }
@@ -246,7 +194,6 @@ button {
     /* 49+ SQUARES: REPEATING 4:2:1 DISTRIBUTION
     ** C1 = 7, C2 = 28, C3 = 14 */
     @media (min-width: 1176px) {
-
         --c2: calc(
             (5 * var(--q) + min(var(--r), 5))
             * var(--grid-size)
@@ -254,12 +201,16 @@ button {
     }
 }
 
+body {
+    position: relative;
+    min-height: 100vh;
+}
+
 .grid {
-    --border-width: 1px;
+    --margin-bottom: calc(var(--grid-size) * 2);
     display: grid;
     grid-template-columns: var(--c1) var(--c2) var(--c3);
-    margin-bottom: calc((var(--grid-size) * 2) - var(--border-width));
-    border-bottom: var(--border-width) solid var(--heavy-grid-line);
+    margin-bottom: var(--margin-bottom);
     transition: grid-template-columns var(--layout-transition);
 }
 
@@ -267,8 +218,14 @@ button {
     grid-column: 2;
 }
 
+.grid--show-border {
+    --border-width: 1px;
+    margin-bottom: calc(var(--margin-bottom) - var(--border-width));
+    border-bottom: var(--border-width) solid var(--heavy-grid-line);
+}
 
-/* SECTIONS
+
+/* SITE HEADER
 ================================================*/
 .site-header {
     padding-top: var(--grid-size);
@@ -280,6 +237,8 @@ button {
 }
 
 .site-header__logo {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-xl);
     grid-row: 1;
     margin-right: var(--grid-size);
 }
@@ -288,37 +247,59 @@ button {
     display: flex;
     justify-self: end;
     gap: calc(var(--grid-size) / 2);
-    /* max-width: calc(var(--c2) - 8rem); */
     align-items: end;
     grid-row: 1;
 }
 
 .site-header__cta {
-    display: flex;
+    display: none; /* Switched to flex at media query */
     grid-row: 1;
     justify-self: end;
-    display: none;
 }
 
+.site-header__cta button {
+    min-width: calc(var(--grid-size) * 4);
+}
+
+
+
+/* PAGE HEADER
+================================================*/
 .page-header {
     background-size: 1lh 1lh;
-    background-image:
-        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
-}
-.lead {
-    background-size: 1lh 1lh;
-    background-image:
-        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
-}
-.lead p {
-    max-width: 32em;
 }
 
+.page-header__title {
+    font-size: var(--font-size-xxl);
+    line-height: var(--line-height-xxl);
+}
+
+
+
+/* LEAD
+================================================*/
+.lead p {
+    max-width: 32em;
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+}
+
+
+
+/* TOPIC
+================================================*/
+.topic h2 {
+    font-size: var(--font-size-xxl);
+    line-height: var(--line-height-xxl);
+    margin-bottom: var(--grid-size);
+}
+
+
+
+/* PHOTOSET
+================================================*/
 .photoset {
     margin-bottom: var(--grid-size);
-    background-size: 1lh 1lh;
-    background-image:
-        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
 }
 
 .photoset__photos {
@@ -332,24 +313,16 @@ button {
     margin-bottom: var(--grid-size);
 }
 
-.page-contents {
-}
-
-.photoset {
-    margin-bottom: var(--grid-size);
-}
-
 .photoset img {
     display: block;
 }
 
-.topic {
-    margin-bottom: var(--grid-size);
-    background-size: 1lh 1lh;
-    background-image:
-        linear-gradient(to top, var(--medium-grid-line) 1px, transparent 1px); 
-}
 
+
+/* RESPONSIVE:
+================================================
+** NOTE: The media query is used twice, make sure to update value in LAYOUT too.
+** It's just easier to read the document having this here as well */
 
 @media (min-width: 1008px) {
     .site-header__cta {
@@ -379,26 +352,26 @@ button {
 
 
 
-/* TEMPORARY
+/* GUIDES
 ================================================*/
-img {
-    max-width: 100%;
-}
 
 .column-guide,
 .grid-guide {
     pointer-events: none;
 }
 
-.column-guide {
-    z-index: 1;
+.column-guide,
+.grid-guide {
     position: absolute;
-    display: grid;
     width: 100%;
-    height: 100%;
     top: 0;
     left: 0;
     bottom: 0;
+}
+
+.column-guide {
+    z-index: 1;
+    display: grid;
     grid-template-columns: var(--c1) var(--c2) var(--c3);
     transition: grid-template-columns var(--layout-transition);
 }
@@ -409,18 +382,8 @@ img {
     border-right: 1px solid var(--heavy-grid-line);
 }
 
-.column-guide > * {
-    /* background: rgba(227, 23, 23, 0.3); */
-}
-
-
 .grid-guide {
     z-index: -1;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    bottom: 0;
     background-size: var(--grid-size) var(--grid-size);
     background-image:
         linear-gradient(to right, var(--light-grid-line) 1px, transparent 1px),
