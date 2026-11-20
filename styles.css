@@ -37,9 +37,9 @@
     --foreground:       light-dark(var(--neutral-2), var(--neutral-7));
     --foreground-light: light-dark(var(--neutral-3), var(--neutral-5));
 
-    --heavy-grid-line:  light-dark(var(--neutral-4), var(--neutral-7));
+    --heavy-grid-line:  light-dark(var(--neutral-2), var(--neutral-7));
     --medium-grid-line: light-dark(var(--neutral-3), var(--neutral-3));
-    --light-grid-line:  light-dark(var(--neutral-2), var(--neutral-2));
+    --light-grid-line:  light-dark(var(--neutral-6), var(--neutral-2));
 }
 
 body {
