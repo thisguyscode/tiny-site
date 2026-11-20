@@ -202,6 +202,7 @@ button {
 body {
     position: relative;
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .grid {
@@ -232,6 +233,7 @@ body {
 /* SITE HEADER
 ================================================*/
 .site-header {
+    background: var(--background);
     padding-top: var(--grid-size);
     align-items: end;
     position: sticky;
@@ -253,6 +255,10 @@ body {
     gap: calc(var(--grid-size) / 2);
     align-items: end;
     grid-row: 1;
+}
+
+.site-header__nav a {
+    flex-basis: 0;
 }
 
 .site-header__cta {
@@ -324,10 +330,15 @@ body {
 
 
 /* RESPONSIVE:
-================================================
-** NOTE: The media query is used twice, make sure to update value in LAYOUT too.
-** It's just easier to read the document having this here as well */
+================================================*/
+@media (min-width: 700px) {
+    .site-header__nav a {
+        flex-basis: auto;
+    }
+}
 
+/* NOTE: This media query is used twice, make sure to update value in LAYOUT too.
+** It's just easier to read the document having this here as well */
 @media (min-width: 1008px) {
     .site-header__cta {
         display: flex;
@@ -342,12 +353,10 @@ body {
         grid-column: 1;
         justify-self: right;
     }
-
     .photoset__photos {
         flex-direction: row;
         align-items: end;
     }
-
     .photoset img {
         border: 1px solid white;
         --wmax: calc(var(--c2) / 3);
@@ -392,4 +401,11 @@ body {
     background-image:
         linear-gradient(to right, var(--light-grid-line) 1px, transparent 1px),
         linear-gradient(to bottom, var(--light-grid-line) 1px, transparent 1px); 
+}
+
+
+/* UTILITIES
+================================================*/
+.no-wrap {
+    white-space: nowrap;
 }
