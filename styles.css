@@ -252,7 +252,7 @@ body {
 .site-header__nav {
     display: flex;
     justify-self: end;
-    gap: calc(var(--grid-size) / 2);
+    gap: calc(var(--grid-size));
     align-items: end;
     grid-row: 1;
 }
@@ -325,6 +325,7 @@ body {
 
 .photoset img {
     display: block;
+    border: 1px solid var(--foreground);
 }
 
 
@@ -358,8 +359,7 @@ body {
         align-items: end;
     }
     .photoset img {
-        border: 1px solid white;
-        --wmax: calc(var(--c2) / 3);
+        --wmax: calc(var(--c2) / 2);
     }
 }
 
